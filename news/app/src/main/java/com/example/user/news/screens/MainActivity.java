@@ -1,50 +1,66 @@
 package com.example.user.news.screens;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.androstock.newsapp.R;
-import com.example.user.news.apiManagers.apiManager;
-import com.example.user.news.models.NewsInfo;
-import com.squareup.picasso.Picasso;;
-import android.content.Intent;
-import android.os.AsyncTask;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.SurfaceHolder;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.view.SurfaceHolder.Callback;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import com.airbnb.lottie.LottieAnimationView;
+import com.example.user.news.R;
+import com.example.user.news.apiManagers.apiManager;
+import com.example.user.news.models.NewsInfo;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+;
 
+@SuppressWarnings("ALL")
+public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MyActivity";
+    public final int PERMISSION_REQUEST_CODE = 100;
     private apiManager ApiManager;
-    private ImageView image;
-    private TextView title;
-    private TextView description;
-    private TextView time;
+    private ImageView final_image;
+    private TextView final_title;
+    private TextView final_description;
+    private TextView final_time;
     private LottieAnimationView loadingAnimationView;
     private ListView listNews;
     private ProgressBar loader;
+    private String country;
+    private Call<NewsInfo> info;
 
+    private LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
 
+            country = "us";
 
+            getNewsInUs(country);
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,21 +85,20 @@ public class MainActivity extends AppCompatActivity {
         loadingAnimationView.cancelAnimation();
         loadingAnimationView.setVisibility(View.GONE);
     }
-
-    private void getWeatherAtCoordinates(double latitude, double longitude) {
-        ApiManager = new apiManager();
-        ApiManager.getNewsInUs("us").enqueue(new Callback<NewsInfo>() {
-
-
+    private void getNewsInUs(String string) {
+        ApiManager.getNewsInUs(country).enqueue(new retrofit2.Callback<NewsInfo>() {
             @Override
             public void onResponse(Call<NewsInfo> call, Response<NewsInfo> response) {
                 if (response.isSuccessful()) {
-                    NewsInfo currentNewsInfo = response.body();
-                    if (currentNewsInfo != null) {
-                        showCurrentNews(currentNewsInfo);
+                    NewsInfo newsInfo = response.body();
+                    Log.d(TAG, "we are going to show the news");
+                    if (newsInfo != null) {
+                        for(int i=0; i<newsInfo.getResult(); i++){
+                        showCurrentNews(newsInfo);}
                         hideLoadingAnimation();
                     }
                 }
+
             }
 
             @Override
@@ -91,25 +106,35 @@ public class MainActivity extends AppCompatActivity {
                 hideLoadingAnimation();
             }
         });
+
+
     }
     private void showCurrentNews(NewsInfo info) {
-        String title = String.valueOf(info.getNewsItems().getWeatherDescriptions().getTitle());
-        title = String.format(getString(R.string.current_temp), currentTemp);
-        currentTemperatureTextView.setText(currentTemp);
 
-        setScreenTitle(info.getCityName());
+        Log.d(TAG, "we are going to show the news");
+        if (info.getItems() != null) {
+        if (info.getItems().getTitle() != null && !info.getItems().getTitle().isEmpty()) {
+            String title = (String) info.getItems().getTitle();
 
-        if (info.getWeatherDescriptions() != null && !info.getWeatherDescriptions().isEmpty()) {
-            WeatherDescription currentWeatherDescription = info.getWeatherDescriptions().get(0);
+            final_title.setText(title);}
+            if (info.getItems().getDescription() != null && !info.getItems().getDescription().isEmpty()) {
+                String description = (String) info.getItems().getDescription();
 
-            String weatherDescription = currentWeatherDescription.getDescription();
-            weatherDescriptionTextView.setText(weatherDescription);
+                final_description.setText(description);
+            }
+            if (info.getItems().getTime() != null && !info.getItems().getTime().isEmpty()) {
+                String time = (String) info.getItems().getTime();
 
-            String iconUrl = "http://openweathermap.org/img/w/" + currentWeatherDescription.getIcon() + ".png";
-            Picasso.with(this).load(iconUrl).into(currentConditionImageView);
+                final_time.setText(time);
+            }
+            if (info.getItems().getUrlToImage() != null && !info.getItems().getUrlToImage().isEmpty()) {
+                String iconUrl = (String) info.getItems().getUrlToImage();
+                Picasso.with(this).load(iconUrl).into(final_image);
+            }
         }
-
     }
+
+
 
 
 }

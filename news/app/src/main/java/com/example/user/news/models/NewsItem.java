@@ -10,14 +10,25 @@ import java.util.List;
 
 
     public class NewsItem {
+    @SerializedName("title")
+    private String T;
+    @SerializedName("description")
+    private String Description;
+    @SerializedName("url")
+    private String URL;
+    @SerializedName("urlToImage")
+    private String image;
+    @SerializedName("publishedAt")
+    private String time;
 
 
-        @SerializedName("news")
-        private List<NewsDescription> newsDescriptions;
-
-        public List<NewsDescription> getWeatherDescriptions() {
-            return newsDescriptions;
-        }
+    public String getTitle() {return T;}
+    public String getDescription() {
+        return Description;
+    }
+    public String getUrl() {return URL;}
+    public String getUrlToImage() {return image;}
+    public String getTime() {return time;}
     }
 
 

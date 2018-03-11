@@ -7,15 +7,33 @@ package com.example.user.news.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class NewsInfo {
+public class NewsInfo implements Serializable {
 
-    @SerializedName("list")
-    private List<NewsItem> NewsItems;
+    @SerializedName("totalResults")
+    private int result;
+    @SerializedName("articles")
+    private NewsItem items;
 
-    public List<NewsItem> getNewsItems() {
-        return NewsItems;
+    public int getResult() {return result;}
+    public NewsItem getItems() {return items;}
+
+    /*private String Description;
+    private String url;
+    private String urlToImage;
+    private String publishedAt;
+
+
+    public String getTitle() {return title;}
+    public String getDescription() {
+        return Description;
     }
+    public String getUrl() {return url;}
+    public String getUrlToImage() {return urlToImage;}
+    public String getTime() {return publishedAt;}*/
+
+
 }

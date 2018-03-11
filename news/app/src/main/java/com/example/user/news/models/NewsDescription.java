@@ -13,9 +13,7 @@ public class NewsDescription
     private String publishedAt;
 
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() {return title;}
     public String getDescription() {
         return Description;
     }
