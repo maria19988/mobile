@@ -2,12 +2,16 @@ package com.example.user.news.screens;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -135,12 +139,33 @@ public class MainActivity extends AppCompatActivity {
     private void showCurrentNews(NewsInfo newsInfo)
     {
         newsRecyclerView = findViewById(R.id.list_source);
-        newsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        newsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<NewsItem> items = newsInfo.getItems();
         NewsListAdapter adapter=new NewsListAdapter(items);
         newsRecyclerView.setAdapter(adapter);
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.searching:
+                startActivity(new Intent(this, MainActivity.class));
+                return true;
+            case R.id.business:
+                startActivity(new Intent(this, Business.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     public static class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
 
         private List<NewsItem> items;
@@ -171,6 +196,9 @@ public class MainActivity extends AppCompatActivity {
             String iconUrl = items.get(position).getUrlToImage();
             Picasso.with(context).load(iconUrl).into(holder.currentImageView);
 
+            //String URL = items.get(position).getUrl();
+            //holder.urlTextView.setText(URL);
+
         }
 
         @Override
@@ -184,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
             TextView currentTitle;
             TextView descriptionTextView;
             TextView timeTextView;
+            TextView urlTextView;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -191,6 +220,8 @@ public class MainActivity extends AppCompatActivity {
                 currentTitle = itemView.findViewById(R.id.title);
                 descriptionTextView = itemView.findViewById(R.id.desc);
                 timeTextView = itemView.findViewById(R.id.time);
+               // urlTextView = itemView.findViewById(R.id.url);
+                //urlTextView.setMovementMethod(LinkMovementMethod.getInstance());
             }
         }
 
