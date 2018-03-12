@@ -7,8 +7,8 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface NewsApi {
-    @GET("news")
-    Call<NewsInfo> getNews(@Query("source") String source);
+    @GET("top-headlines")
+    Call<NewsInfo> getNews(@Query("sources") String source);
 
 
     //@GET("weather")

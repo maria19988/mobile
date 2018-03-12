@@ -45,10 +45,6 @@ public class apiManager
         return newsApi.getNews(source);
     }
 
-    /*public Call<CategoryNewsInfo> getWeatherByCategory(String cat) {
-        return weatherApi.getWeatherByCategory(cat);
-    }*/
-
     private static class OpenNewsInterceptor implements Interceptor {
 
         @Override

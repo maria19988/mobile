@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private final int CITY_ACTIVITY_REQUEST_CODE = 200;
 
     private apiManager ApiManager;
-
+    private static final String TAG = "MyActivity";
     private Spinner sources;
     private Button search;
     private String SOURCE, source;
@@ -100,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                 getNews(SOURCE);
+
+                search.setVisibility(View.GONE);
+                sources.setVisibility(View.GONE);
             }
         };
 
@@ -115,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     NewsInfo newsInfo=response.body();
                     if (newsInfo != null){
+                        Log.d(TAG, "hello");
                         showCurrentNews(newsInfo);
                     }
                 }
@@ -128,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
     }
     private void showCurrentNews(NewsInfo newsInfo)
     {
+        newsRecyclerView = findViewById(R.id.list_source);
+        newsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<NewsItem> items = newsInfo.getItems();
         NewsListAdapter adapter=new NewsListAdapter(items);
         newsRecyclerView.setAdapter(adapter);
