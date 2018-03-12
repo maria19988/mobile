@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="news_sources" />
+    <string-array name="news_sources" >
+        <item>ABC</item>
+        <item>BBC</item>
+        <item>CNN</item>
+        <item>ESPN</item>
+        <item>MTV</item>
+    </string-array>
 </resources>

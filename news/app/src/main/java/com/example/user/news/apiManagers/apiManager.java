@@ -22,7 +22,7 @@ public class apiManager
     private Retrofit retrofit;
     private NewsApi newsApi;
 
-    public static final String NEWS_BASE_URL = "https://newsapi.org/v2";
+    public static final String NEWS_BASE_URL = "https://newsapi.org/v2/";
 
     public apiManager() {
         Gson gson = new GsonBuilder().create();

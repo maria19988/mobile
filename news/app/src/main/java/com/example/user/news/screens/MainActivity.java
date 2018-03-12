@@ -21,6 +21,7 @@ import com.example.user.news.models.NewsInfo;
 import com.example.user.news.models.NewsItem;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,8 +51,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sources = findViewById(R.id.source);
+
+        List<String> spinnerArray =  new ArrayList<String>();
+
+
         sourcesAdapter = ArrayAdapter.createFromResource(this, R.array.news_sources, android.R.layout.simple_spinner_item);
-        sourcesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        // Spinner Drop down elements
+        /*List<String> Sources = new ArrayList<String>();
+        Sources.add("ABC");
+        Sources.add("BBC");
+       Sources.add("CNN");
+        Sources.add("ESPN");
+        Sources.add("MTV");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Sources);*/
+
+//        sourcesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sources.setAdapter(sourcesAdapter);
 
         ApiManager = new apiManager();
@@ -133,16 +151,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             Context context = holder.itemView.getContext();
-            String title = items.get(0).getTitle();
+            String title = items.get(position).getTitle();
             holder.currentTitle.setText(title);
 
-            String description = items.get(0).getDescription();
+            String description = items.get(position).getDescription();
             holder.descriptionTextView.setText(description);
 
-            String time = items.get(0).getTime();
+            String time = items.get(position).getTime();
             holder.timeTextView.setText(time);
 
-            String iconUrl = items.get(0).getUrlToImage();
+            String iconUrl = items.get(position).getUrlToImage();
             Picasso.with(context).load(iconUrl).into(holder.currentImageView);
 
         }
