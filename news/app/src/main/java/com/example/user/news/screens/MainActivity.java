@@ -159,9 +159,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.searching:
                 startActivity(new Intent(this, MainActivity.class));
                 return true;
-            case R.id.business:
-                startActivity(new Intent(this, Business.class));
-                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -206,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             return items.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
 
             ImageView currentImageView;
             TextView currentTitle;
