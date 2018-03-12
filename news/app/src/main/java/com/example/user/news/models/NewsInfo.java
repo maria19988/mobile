@@ -20,20 +20,4 @@ public class NewsInfo implements Serializable {
 
     public int getResult() {return result;}
     public List<NewsItem> getItems() {return items;}
-
-    /*private String Description;
-    private String url;
-    private String urlToImage;
-    private String publishedAt;
-
-
-    public String getTitle() {return title;}
-    public String getDescription() {
-        return Description;
-    }
-    public String getUrl() {return url;}
-    public String getUrlToImage() {return urlToImage;}
-    public String getTime() {return publishedAt;}*/
-
-
 }

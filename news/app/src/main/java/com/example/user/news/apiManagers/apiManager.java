@@ -41,7 +41,7 @@ public class apiManager
 
 
 
-    public static Call<NewsInfo> getNews(String source) {
+    public Call<NewsInfo> getNews(String source) {
         return newsApi.getNews(source);
     }
 
