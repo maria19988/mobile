@@ -63,19 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
         sourcesAdapter = ArrayAdapter.createFromResource(this, R.array.news_sources, android.R.layout.simple_spinner_item);
 
-
-        // Spinner Drop down elements
-        /*List<String> Sources = new ArrayList<String>();
-        Sources.add("ABC");
-        Sources.add("BBC");
-       Sources.add("CNN");
-        Sources.add("ESPN");
-        Sources.add("MTV");
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, Sources);*/
-
-//        sourcesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sources.setAdapter(sourcesAdapter);
 
         ApiManager = new apiManager();
@@ -194,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
             String iconUrl = items.get(position).getUrlToImage();
             Picasso.with(context).load(iconUrl).into(holder.currentImageView);
 
-            //String URL = items.get(position).getUrl();
-            //holder.urlTextView.setText(URL);
 
         }
 
