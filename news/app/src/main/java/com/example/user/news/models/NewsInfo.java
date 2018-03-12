@@ -16,10 +16,10 @@ public class NewsInfo implements Serializable {
     @SerializedName("totalResults")
     private int result;
     @SerializedName("articles")
-    private NewsItem items;
+    private List<NewsItem> items;
 
     public int getResult() {return result;}
-    public NewsItem getItems() {return items;}
+    public List<NewsItem> getItems() {return items;}
 
     /*private String Description;
     private String url;

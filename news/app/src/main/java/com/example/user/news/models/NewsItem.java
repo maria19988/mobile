@@ -2,8 +2,6 @@ package com.example.user.news.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
  * Created by user on 3/10/2018.
  */
@@ -29,6 +27,8 @@ import java.util.List;
     public String getUrl() {return URL;}
     public String getUrlToImage() {return image;}
     public String getTime() {return time;}
-    }
+
+
+}
 
 

@@ -1,104 +1,112 @@
 package com.example.user.news.screens;
 
-import android.location.Location;
-import android.location.LocationListener;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.user.news.R;
 import com.example.user.news.apiManagers.apiManager;
 import com.example.user.news.models.NewsInfo;
+import com.example.user.news.models.NewsItem;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
-;
-
-@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MyActivity";
+
     public final int PERMISSION_REQUEST_CODE = 100;
+    private final int CITY_ACTIVITY_REQUEST_CODE = 200;
+
     private apiManager ApiManager;
-    private ImageView final_image;
-    private TextView final_title;
-    private TextView final_description;
-    private TextView final_time;
+
+    /*private ImageView currentConditionImageView;
+    private TextView currentTemperatureTextView, weatherDescriptionTextView;
     private LottieAnimationView loadingAnimationView;
-    private ListView listNews;
-    private ProgressBar loader;
-    private String country;
-    private Call<NewsInfo> info;
+    private RecyclerView forecastRecyclerView;*/
 
-    private LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-
-            country = "us";
-
-            getNewsInUs(country);
-        }
-
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listNews = (ListView) findViewById(R.id.listNews);
-        loader = (ProgressBar) findViewById(R.id.loader);
-        listNews.setEmptyView(loader);
-
         ApiManager = new apiManager();
-        /*if(mainfcts.isNetworkAvailable(getApplicationContext()))
-        {
-            DownloadNews newsTask = new DownloadNews();
-            newsTask.execute();
-        }else{
-            Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
-        }*/
 
     }
 
-    private void hideLoadingAnimation() {
-        loadingAnimationView.cancelAnimation();
-        loadingAnimationView.setVisibility(View.GONE);
-    }
-    private void getNewsInUs(String string) {
-        ApiManager.getNewsInUs(country).enqueue(new retrofit2.Callback<NewsInfo>() {
+    /*@SuppressLint("MissingPermission")
+    private void startLocationManager() {
+
+        currentConditionImageView = findViewById(R.id.current_condition);
+        currentTemperatureTextView = findViewById(R.id.current_temperature);
+        loadingAnimationView = findViewById(R.id.animation_view);
+        weatherDescriptionTextView = findViewById(R.id.weather_description);
+        forecastRecyclerView = findViewById(R.id.forecast_list);
+
+        forecastRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+    }*/
+
+   /* @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startLocationManager();
+        }
+    }*/
+
+    private void getNews(String sources) {
+        /*ApiManager.getNews(sources).enqueue(new Callback<NewsInfo>() {
+            @Override
+            public void onResponse(Call<CurrentWeatherInfo> call, Response<CurrentWeatherInfo> response) {
+                if (response.isSuccessful()) {
+                    CurrentWeatherInfo currentWeatherInfo = response.body();
+                    if (currentWeatherInfo != null) {
+                        showCurrentWeather(currentWeatherInfo);
+                        hideLoadingAnimation();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CurrentWeatherInfo> call, Throwable t) {
+                hideLoadingAnimation();
+            }
+        });*/
+
+       /* ApiManager.getNews(sources).enqueue(new Callback<NewsInfo>() {
             @Override
             public void onResponse(Call<NewsInfo> call, Response<NewsInfo> response) {
                 if (response.isSuccessful()) {
                     NewsInfo newsInfo = response.body();
-                    Log.d(TAG, "we are going to show the news");
                     if (newsInfo != null) {
-                        for(int i=0; i<newsInfo.getResult(); i++){
-                        showCurrentNews(newsInfo);}
+                        showCurrentNews(newsInfo);
                         hideLoadingAnimation();
                     }
                 }
-
             }
 
             @Override
@@ -106,35 +114,151 @@ public class MainActivity extends AppCompatActivity {
                 hideLoadingAnimation();
             }
         });
+    }*/
 
+   // @Override
+   /* public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }*/
 
-    }
-    private void showCurrentNews(NewsInfo info) {
+    //@Override
+    /*public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.cities:
+                gotoCitiesPickerScreen();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
 
-        Log.d(TAG, "we are going to show the news");
-        if (info.getItems() != null) {
-        if (info.getItems().getTitle() != null && !info.getItems().getTitle().isEmpty()) {
-            String title = (String) info.getItems().getTitle();
-
-            final_title.setText(title);}
-            if (info.getItems().getDescription() != null && !info.getItems().getDescription().isEmpty()) {
-                String description = (String) info.getItems().getDescription();
-
-                final_description.setText(description);
-            }
-            if (info.getItems().getTime() != null && !info.getItems().getTime().isEmpty()) {
-                String time = (String) info.getItems().getTime();
-
-                final_time.setText(time);
-            }
-            if (info.getItems().getUrlToImage() != null && !info.getItems().getUrlToImage().isEmpty()) {
-                String iconUrl = (String) info.getItems().getUrlToImage();
-                Picasso.with(this).load(iconUrl).into(final_image);
+    //@Override
+    /*protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CITY_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            CurrentWeatherInfo currentWeatherInfo = (CurrentWeatherInfo) data.getSerializableExtra(CityPickerActivity.CITY_RESULT_KEY);
+            if (currentWeatherInfo != null) {
+                latitude = currentWeatherInfo.getCoordinates().getLatitude();
+                longitude = currentWeatherInfo.getCoordinates().getLongitude();
+                setScreenTitle(currentWeatherInfo.getCityName());
+                showCurrentWeather(currentWeatherInfo);
             }
         }
+    }*/
+
+        //private void setScreenTitle(String title) {
+
+        //if (!TextUtils.isEmpty(title)) {
+
+        //setTitle(title);
+
+        //}
+
+        //}
+
+    /*private void gotoCitiesPickerScreen() {
+        Intent intent = new Intent(this, CityPickerActivity.class);
+        startActivityForResult(intent, CITY_ACTIVITY_REQUEST_CODE);
+    }*/
+
+    /*private void getForecastAtCoordinates(double latitude, double longitude) {
+        weatherApiManager.getForecastWeatherInfo(latitude, longitude).enqueue(new Callback<ForecastWeatherInfo>() {
+            @Override
+            public void onResponse(Call<ForecastWeatherInfo> call, Response<ForecastWeatherInfo> response) {
+                if (response.isSuccessful()) {
+                    ForecastWeatherInfo forecastWeatherInfo = response.body();
+                    if (forecastWeatherInfo != null) {
+                        showForecastWeather(forecastWeatherInfo);
+                        hideLoadingAnimation();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ForecastWeatherInfo> call, Throwable t) {
+                hideLoadingAnimation();
+            }
+        });
+    }*/
+
+   /* private void showCurrentNews(NewsInfo info) {
+       String currentTemp = String.valueOf(info.getTempInfo().getTemp());
+        currentTemp = String.format(getString(R.string.current_temp), currentTemp);
+        currentTemperatureTextView.setText(currentTemp);
+
+        setScreenTitle("NEWS");
+
+        if (info.getItems() != null && !info.getItems().isEmpty()) {
+            String title = info.getItems().getTitle();
+
+            String weatherDescription = currentWeatherDescription.getDescription();
+            weatherDescriptionTextView.setText(weatherDescription);
+
+            String iconUrl = "http://openweathermap.org/img/w/" + currentWeatherDescription.getIcon() + ".png";
+            Picasso.with(this).load(iconUrl).into(currentConditionImageView);
+        }
+    }*/
+
+    private void showNews(NewsInfo info) {
+        List<NewsItem> items = info.getItems();
+        NewstListAdapter adapter = new NewsListAdapter(items);
+        forecastRecyclerView.setAdapter(adapter);
     }
 
+   /* private void hideLoadingAnimation() {
+        loadingAnimationView.cancelAnimation();
+        loadingAnimationView.setVisibility(View.GONE);
+    }*/
 
+    public static class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
 
+        private NewsInfo items;
 
+        public NewsListAdapter(NewsInfo items) {
+            this.items = items;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+
+            List<NewsItem> item = items.getItems();
+            if (item != null && !item.isEmpty()) {
+                String title = item.getTitle();
+                String desc = item.getDescription();
+                holder.descriptionTextView.setText(desc);
+
+                String iconUrl = "http://openweathermap.org/img/w/" + description.getIcon() + ".png";
+                Picasso.with(context).load(iconUrl).into(holder.currentWeatherImageView);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            ImageView currentWeatherImageView;
+            TextView currentTitle;
+            TextView descriptionTextView;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                currentWeatherImageView = itemView.findViewById(R.id.weather_condition);
+                currentTempTextView = itemView.findViewById(R.id.current_temp);
+                descriptionTextView = itemView.findViewById(R.id.weather_description);
+            }
+        }
+
+    }
 }

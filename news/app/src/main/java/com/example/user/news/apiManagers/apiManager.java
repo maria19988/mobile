@@ -3,13 +3,11 @@ package com.example.user.news.apiManagers;
  * Created by user on 3/10/2018.
  */
 import com.example.user.news.models.NewsInfo;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
-import com.example.user.news.apiManagers.NewsApi;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -24,7 +22,7 @@ public class apiManager
     private Retrofit retrofit;
     private NewsApi newsApi;
 
-    private final String NEWS_BASE_URL = "https://newsapi.org/v2/";
+    public static final String NEWS_BASE_URL = "https://newsapi.org/v2";
 
     public apiManager() {
         Gson gson = new GsonBuilder().create();
@@ -43,8 +41,8 @@ public class apiManager
 
 
 
-    public Call<NewsInfo> getNewsInUs(String country) {
-        return newsApi.getNewsInUs(country);
+    public static Call<NewsInfo> getNews(String source) {
+        return newsApi.getNews(source);
     }
 
     /*public Call<CategoryNewsInfo> getWeatherByCategory(String cat) {

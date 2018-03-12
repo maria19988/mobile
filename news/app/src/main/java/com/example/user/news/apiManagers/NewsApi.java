@@ -8,7 +8,7 @@ import retrofit2.http.Query;
 
 public interface NewsApi {
     @GET("news")
-    Call<NewsInfo> getNewsInUs(@Query("Country") String country);
+    Call<NewsInfo> getNews(@Query("source") String source);
 
 
     //@GET("weather")
